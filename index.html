@@ -70,14 +70,21 @@
             {diameter:2},   // Options of the mesh
             scene           // The scene object to attach the mesh
         );
-        sphere1.position.y = 1; // Diameter/2
+        sphere1.position.y = 1.5; // Diameter/2
+
         var sphere2 = BABYLON.MeshBuilder.CreateSphere(
             "sphere2",      // Name of the mesh
             {diameter:3},   // Options of the mesh
             scene           // The scene the mesh belongs to
         );
-        sphere2.position.x = -3; // sphere2.position = new BABYLON.Vector3(-3,0,0);
-        sphere2.position.y = 1.5;  // Diameter/2
+        sphere2.position = new BABYLON.Vector3(-3,1.5,0); // (x,y,z)
+
+        var sphere3 = BABYLON.MeshBuilder.CreateSphere(
+            "sphere3",      // Name of the mesh
+            {diameter:2},   // Options of the mesh
+            scene           // The scene the mesh belongs to
+        );
+        sphere3.position = new BABYLON.Vector3(3,1.5,0); // (x,y,z)
 
         // 5. Add materials and textures
         var pinkMaterial = new BABYLON.StandardMaterial(
@@ -97,6 +104,13 @@
         brickMaterial.specularTexture = new BABYLON.Texture("img/pexels-photo-761142.jpeg", scene); // The texture of the highlight
         sphere1.material = brickMaterial;
 
+        var blueMaterial = new BABYLON.StandardMaterial(
+            "blueMaterial",     // Name of the material
+            scene               // The scene the material belongs to
+        );
+        blueMaterial.diffuseColor = new BABYLON.Color3(0, 0, 1); // The basic color of the material. RGB (0 to 1)
+        sphere3.material = blueMaterial;
+
         // 6. Adding the ground and sky
         var ground = BABYLON.MeshBuilder.CreateGround(
             "ground",                   // Name of the ground
@@ -114,6 +128,18 @@
         grassMaterial.diffuseTexture.uScale = 4; // Repetitions in the x-axis
         grassMaterial.diffuseTexture.vScale = 4; // Repetitions in the z-axis
         ground.material = grassMaterial;
+
+        // 7. Animation
+        scene.registerAfterRender(function () {
+
+            // Detect collision
+            if (sphere3.intersectsMesh(ground, true)) {
+                sphere3.material.diffuseColor = new BABYLON.Color3(1, 0, 0);
+                sphere3.position.x += .005;
+            } else {
+                sphere3.position.y -= .005;
+            }
+        });
 
         return scene;
     };
