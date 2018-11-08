@@ -47,7 +47,7 @@
             Math.PI / 2,            //
             10,                     // Distance from the target
             BABYLON.Vector3.Zero(), // The target of the camera. (0,0,0) or .Zero() points to the center of the scene (x,y,z)
-            scene                   // The scene object to attach the light
+            scene                   // The scene the camera belongs to
         );
         camera.attachControl(canvas, true);
 
@@ -55,12 +55,12 @@
         var light1 = new BABYLON.HemisphericLight(
             "light1",                       // Name of the light
             new BABYLON.Vector3(1, 1, 0),   // Position of the light in the scene (x,y,z)
-            scene                           // The scene object to attach the light
+            scene                           // The scene the light belongs to
         );
         var light2 = new BABYLON.PointLight(
             "light2",                       // Name of the light
             new BABYLON.Vector3(0, 1, -1),  // Position of the light in the scene (x,y,z)
-            scene                           // The scene object to attach the light
+            scene                           // The scene the light belongs to
         );
 
         // 4. This is where you create and manipulate meshes
@@ -72,7 +72,7 @@
         var sphere2 = BABYLON.MeshBuilder.CreateSphere(
             "sphere2",      // Name of the mesh
             {diameter:3},   // Options of the mesh
-            scene           // The scene object to attach the mesh
+            scene           // The scene the mesh belongs to
         );
         sphere2.position.x = -3; // sphere2.position = new BABYLON.Vector3(-3,0,0);
 
