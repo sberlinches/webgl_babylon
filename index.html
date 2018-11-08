@@ -69,12 +69,14 @@
             {diameter:2},   // Options of the mesh
             scene           // The scene object to attach the mesh
         );
+        sphere1.position.y = 1; // Diameter/2
         var sphere2 = BABYLON.MeshBuilder.CreateSphere(
             "sphere2",      // Name of the mesh
             {diameter:3},   // Options of the mesh
             scene           // The scene the mesh belongs to
         );
         sphere2.position.x = -3; // sphere2.position = new BABYLON.Vector3(-3,0,0);
+        sphere2.position.y = 1.5;  // Diameter/2
 
         // 5. Add materials and textures
         var pinkMaterial = new BABYLON.StandardMaterial(
