@@ -44,7 +44,7 @@
         var camera = new BABYLON.ArcRotateCamera(
             "Camera",               // Name of the camera
             Math.PI / 2,            //
-            Math.PI / 2,            //
+            Math.PI / 3,            // Camera inclination
             10,                     // Distance from the target
             BABYLON.Vector3.Zero(), // The target of the camera. (0,0,0) or .Zero() points to the center of the scene (x,y,z)
             scene                   // The scene the camera belongs to
@@ -93,6 +93,24 @@
         brickMaterial.diffuseTexture = new BABYLON.Texture("img/pexels-photo-761142.jpeg", scene); // The basic texture of the material
         brickMaterial.specularTexture = new BABYLON.Texture("img/pexels-photo-761142.jpeg", scene); // The texture of the highlight
         sphere1.material = brickMaterial;
+
+        // 6. Adding the ground and sky
+        var ground = BABYLON.MeshBuilder.CreateGround(
+            "ground",                   // Name of the ground
+            {width:100, height:100},    //
+            scene                       // The scene the ground belongs to
+        );
+        ground.position = new BABYLON.Vector3(0,0,0);
+
+        var grassMaterial = new BABYLON.StandardMaterial(
+            "grassMaterial",    // Name of the material
+            scene               // The scene the material belongs to
+        );
+        grassMaterial.diffuseTexture = new BABYLON.Texture("img/pexels-photo-413195.jpeg", scene);
+        grassMaterial.specularTexture = new BABYLON.Texture("img/pexels-photo-413195.jpeg", scene);
+        grassMaterial.diffuseTexture.uScale = 4; // Repetitions in the x-axis
+        grassMaterial.diffuseTexture.vScale = 4; // Repetitions in the z-axis
+        ground.material = grassMaterial;
 
         return scene;
     };
