@@ -76,6 +76,16 @@
         );
         sphere2.position.x = -3; // sphere2.position = new BABYLON.Vector3(-3,0,0);
 
+        // 5. Add materials and textures
+        var pinkMaterial = new BABYLON.StandardMaterial(
+            "pinkMaterial", // Name of the material
+            scene           // The scene the material belongs to
+        );
+        pinkMaterial.diffuseColor = new BABYLON.Color3(1, .3, .6); // The basic color of the material. RGB (0 to 1)
+        pinkMaterial.specularPower = 90; // Defines how sharp are the highlights in the material
+        pinkMaterial.emissiveColor = new BABYLON.Color3(1, .3, .6); // Define the color of the material as if self lit
+        sphere2.material = pinkMaterial;
+
         return scene;
     };
     /******* End of the create scene function ******/
