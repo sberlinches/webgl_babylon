@@ -150,8 +150,22 @@
 
 
 
+        // 7. Animation
+        scene.registerAfterRender(function () {
 
-        // Gravity
+            // Detect collision
+            if (sphere3.intersectsMesh(ground, true)) {
+                sphere3.material.diffuseColor = new BABYLON.Color3(1, 0, 0);
+                sphere3.position.x += .005;
+            } else {
+                sphere3.position.y -= .005;
+            }
+        });
+
+
+
+
+        // 8. Gravity
         var physicsPlugin = new BABYLON.CannonJSPlugin();
         var gravityVector = new BABYLON.Vector3(0, -9.81, 0); // 9.81 m/s^2 pointing downwards
 
@@ -178,25 +192,27 @@
             scene                                   // The scene the material belongs to
         );
 
-        sphere2.physicsImpostor.applyImpulse(
-            new BABYLON.Vector3(1,2,0),     // Controls the strength and direction of the impulse (x,y,z)
-            sphere2.getAbsolutePosition()
-        );
 
 
 
+        // 9. Interactivity
+        window.addEventListener("click", function () {
 
-        // 7. Animation
-        scene.registerAfterRender(function () {
+            var pickResult = scene.pick(scene.pointerX, scene.pointerY);
 
-            // Detect collision
-            if (sphere3.intersectsMesh(ground, true)) {
-                sphere3.material.diffuseColor = new BABYLON.Color3(1, 0, 0);
-                sphere3.position.x += .005;
-            } else {
-                sphere3.position.y -= .005;
+            if(pickResult) {
+
+                //console.log(pickResult.pickedPoint); //TODO: Use to calculates the direction of the impulse
+
+                pickResult.pickedMesh.physicsImpostor.applyImpulse(
+                    new BABYLON.Vector3(0,8,-2),   // Controls the strength and direction of the impulse (x,y,z)
+                    pickResult.pickedMesh.getAbsolutePosition()
+                );
             }
         });
+
+
+
 
         return scene;
     };
