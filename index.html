@@ -89,7 +89,7 @@
             {diameter:3},   // Options of the mesh
             scene           // The scene the mesh belongs to
         );
-        sphere2.position = new BABYLON.Vector3(-3,1.5,0); // (x,y,z)
+        sphere2.position = new BABYLON.Vector3(-3,2.5,0); // (x,y,z)
 
         var sphere3 = BABYLON.MeshBuilder.CreateSphere(
             "sphere3",      // Name of the mesh
@@ -108,7 +108,6 @@
         );
         pinkMaterial.diffuseColor = new BABYLON.Color3(1, .3, .6); // The basic color of the material. RGB (0 to 1)
         pinkMaterial.specularPower = 90; // Defines how sharp are the highlights in the material
-        pinkMaterial.emissiveColor = new BABYLON.Color3(1, .3, .6); // Define the color of the material as if self lit
         sphere2.material = pinkMaterial;
 
         var brickMaterial = new BABYLON.StandardMaterial(
@@ -151,15 +150,19 @@
 
 
         // 7. Animation
+        var hasCollide = false;
+
         scene.registerAfterRender(function () {
 
             // Detect collision
-            if (sphere3.intersectsMesh(ground, true)) {
-                sphere3.material.diffuseColor = new BABYLON.Color3(1, 0, 0);
-                sphere3.position.x += .005;
-            } else {
-                sphere3.position.y -= .005;
-            }
+            if(!hasCollide) {
+                if (sphere3.intersectsMesh(ground, true)) {
+                    sphere3.material.diffuseColor = new BABYLON.Color3(1, 0, 0);
+                    hasCollide = true;
+                } else
+                    sphere3.position.y -= .005;
+            } else
+                sphere3.position.y += .005;
         });
 
 
@@ -174,22 +177,27 @@
         sphere2.physicsImpostor = new BABYLON.PhysicsImpostor(
             sphere2,                                // The object to be applied
             BABYLON.PhysicsImpostor.SphereImpostor, // Type of impostor
-            {mass: 1, restitution: 0.8 },           // Restitution controls how bouncy the object is
+            {mass: 1, restitution: 0.8},           // Restitution controls how bouncy the object is
             scene                                   // The scene the material belongs to
         );
 
         sphere1.physicsImpostor = new BABYLON.PhysicsImpostor(
             sphere1,                                // The object to be applied
             BABYLON.PhysicsImpostor.SphereImpostor, // Type of impostor
-            {mass: 1, restitution: 0.8 },           // Restitution controls how bouncy the object is
+            {mass: 1, restitution: 0.8},           // Restitution controls how bouncy the object is
             scene                                   // The scene the material belongs to
         );
 
         ground.physicsImpostor = new BABYLON.PhysicsImpostor(
             ground,                                 // The object to be applied
             BABYLON.PhysicsImpostor.BoxImpostor,    // Type of impostor
-            { mass: 0, restitution: 0.9 },          // Restitution controls how bouncy the object is
+            {mass: 0, restitution: 0.9},          // Restitution controls how bouncy the object is
             scene                                   // The scene the material belongs to
+        );
+
+        sphere2.physicsImpostor.applyImpulse(
+            new BABYLON.Vector3(1,2,0),
+            sphere2.getAbsolutePosition()
         );
 
 
@@ -201,6 +209,8 @@
             var pickResult = scene.pick(scene.pointerX, scene.pointerY);
 
             if(pickResult) {
+
+                pickResult.pickedMesh.material.diffuseColor = new BABYLON.Color3(0, 1, 0);
 
                 //console.log(pickResult.pickedPoint); //TODO: Use to calculates the direction of the impulse
 
